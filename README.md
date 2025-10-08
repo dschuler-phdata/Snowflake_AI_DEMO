@@ -9,9 +9,14 @@ Copy the contents of the `demo_setup.sql` script and run in a Snowflake SQL Work
 - Load the data into an internal stage
 - Configure Snowflake Intelligence
 
-Once that script has been ran
+Once that script has been ran, click the '+' on the left navbar, choose 'Notebook', and then 'From Git Repository'.
+In the window that pops up, Choose 'Select .ipynb file', select the 'SF_AI_DEMO' database, then the 'SF_AI_DEMO_REPO' which was just cloned via our setup script. From there, choose the 'FULL_NOTEBOOK.ipynb' file.
 
+Now be sure the notebook location is set to the 'SF_AI_DEMO' database and 'DEMO_SCHEMA' schema and click 'Create'.
 
+You are now set up and ready to run the demo!
+
+## Overview
 This project demonstrates the comprehensive Snowflake Intelligence capabilities including:
 - **Cortex Analyst** (Text-to-SQL via semantic views)
 - **Cortex Search** (Vector search for unstructured documents)  
