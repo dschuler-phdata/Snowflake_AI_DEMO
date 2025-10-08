@@ -1,5 +1,17 @@
 # Snowflake Intelligence Demo
 
+This is a fork of https://github.com/NickAkincilar/Snowflake_AI_DEMO to convert the content into a Hands On Lab using Snowflake Notebooks.
+
+## Setup Instructions
+Copy the contents of the `demo_setup.sql` script and run in a Snowflake SQL Worksheet. This setup script will:
+- Create the Snowflake objects needed to run the demo
+- Create an API Integration for this repository
+- Load the data into an internal stage
+- Configure Snowflake Intelligence
+
+Once that script has been ran
+
+
 This project demonstrates the comprehensive Snowflake Intelligence capabilities including:
 - **Cortex Analyst** (Text-to-SQL via semantic views)
 - **Cortex Search** (Vector search for unstructured documents)  
@@ -29,10 +41,9 @@ This project demonstrates the comprehensive Snowflake Intelligence capabilities 
 - **Sales Documents**: Sales playbooks, customer success stories, performance data
 
 ### 4. Snowflake Intelligence Agent
-- **Multi-Tool Agent**: Combines Cortex Search, Cortex Analyst, Web Scraping, and File Access capabilities
+- **Multi-Tool Agent**: Combines Cortex Search, Cortex Analyst, and Web Scraping capabilities
 - **Cross-Domain Analysis**: Can query all business domains and documents
 - **Web Content Analysis**: Can scrape and analyze content from any web URL
-- **File Sharing**: Can generate presigned URLs for temporary access to internal stage files
 - **Natural Language Interface**: Responds to business questions across all departments
 - **Visualization Support**: Generates charts and visualizations for data insights
 
@@ -100,10 +111,6 @@ graph TD
         WS[Web Scraping Function<br/>Python-based content extraction<br/>External access integration]
     end
 
-    subgraph "File Access Layer"
-        FA[Presigned URL Function<br/>Secure temporary file access<br/>Stage file sharing]
-    end
-
     subgraph "AI Layer"
         P[Snowflake Intelligence Agent<br/>COMPANY_CHATBOT_AGENT<br/>Multi-tool orchestration]
     end
@@ -154,7 +161,6 @@ graph TD
     N --> P
     O --> P
     WS --> P
-    FA --> P
     
     %% User Access via API
     P -->|API| Q
@@ -168,7 +174,6 @@ graph TD
     classDef analyst fill:#e3f2fd
     classDef search fill:#fff3e0
     classDef webscrape fill:#fce4ec
-    classDef fileaccess fill:#e0f2f1
     classDef agent fill:#ffebee
     classDef user fill:#f1f8e9
     
@@ -180,7 +185,6 @@ graph TD
     class S,T,U,V analyst
     class L,M,N,O search
     class WS webscrape
-    class FA fileaccess
     class P agent
     class Q user
 ```
@@ -196,9 +200,8 @@ graph TD
 8. **Cortex Analyst Layer**: Each semantic view connects to a dedicated Text2SQL service for natural language to SQL conversion
 9. **Search Services**: Domain-specific Cortex Search services enable vector search over unstructured documents
 10. **Web Scraping Service**: Custom Python function enables real-time analysis of external web content
-11. **File Access Service**: Presigned URL function provides secure, temporary access to internal stage files
-12. **AI Orchestration**: The Snowflake Intelligence Agent orchestrates between Text2SQL services, Search services, Web Scraping, and File Access
-13. **User Access**: Users interact through API connections to the agent using natural language queries
+11. **AI Orchestration**: The Snowflake Intelligence Agent orchestrates between Text2SQL services, Search services, and Web Scraping
+12. **User Access**: Users interact through API connections to the agent using natural language queries
 
 ## Database Schema
 
@@ -218,36 +221,6 @@ graph TD
 - `sf_opportunities` - Sales pipeline and revenue data (25,000 records)
 - `sf_contacts` - Contact records with campaign attribution (37,563 records)
 
-## Setup Instructions
-
-**Single Script Setup**: The entire demo environment is created with one script:
-1. **Run the complete setup script**:
-   ```sql
-   -- Execute in Snowflake worksheet
-   @SF_IntelligenceDemo_Full/sql_scripts/demo_setup.sql
-   ```
-
-2. **What the script creates**:
-   - `SF_Intelligence_Demo` role and permissions
-   - `Snow_Intelligence_demo_wh` warehouse
-   - `SF_AI_DEMO.DEMO_SCHEMA` database and schema
-   - Git repository integration
-   - All dimension and fact tables with data
-   - 4 semantic views for Cortex Analyst
-   - 4 Cortex Search services for documents
-   - Web scraping function with external access integration
-   - Presigned URL function for secure file access
-   - 1 Snowflake Intelligence Agent with multi-tool capabilities
-
-3. **Post-Setup Verification**:
-   - Run `SHOW TABLES;` to verify 20 tables created (17 original + 3 Salesforce CRM)
-   - Run `SHOW SEMANTIC VIEWS;` to verify 4 semantic views
-   - Run `SHOW CORTEX SEARCH SERVICES;` to verify 4 search services
-   - Run `SHOW FUNCTIONS LIKE 'WEB_SCRAPE';` to verify web scraping function
-   - Run `SHOW FUNCTIONS LIKE 'GET_FILE_PRESIGNED_URL';` to verify presigned URL function
-   - Test agent: `SELECT SNOWFLAKE_INTELLIGENCE.AGENTS.COMPANY_CHATBOT_AGENT('What are our monthly sales for 2025?');`
-   - Test web scraping: `SELECT SNOWFLAKE_INTELLIGENCE.AGENTS.COMPANY_CHATBOT_AGENT('Analyze the content from https://snowflake.com/products/ and compare it to our product data');`
-   - Test file access: `SELECT SNOWFLAKE_INTELLIGENCE.AGENTS.COMPANY_CHATBOT_AGENT('Generate a presigned URL for the sales_fact.csv file in our internal stage');`
 
 
 
@@ -258,7 +231,6 @@ The Company Chatbot Agent can:
 - **Perform revenue attribution** from marketing campaigns to closed deals via Salesforce CRM integration
 - **Search unstructured documents** to provide context and policy information
 - **Scrape and analyze web content** from any URL to incorporate external data and insights
-- **Generate presigned URLs** for secure, temporary access to files stored in internal stages
 - **Generate visualizations** including trend lines, bar charts, and analytics
 - **Combine insights** from multiple data sources for comprehensive answers
 - **Calculate marketing ROI** and customer acquisition costs across the complete customer journey
@@ -306,7 +278,7 @@ The following questions demonstrate the agent's ability to perform cross-domain 
    "Calculate our customer acquisition cost by marketing channel. Which channels deliver the most profitable customers?"
 
 3. **Vendor Spend & Policy Compliance**  
-   "What are our top 5 vendors in the last 5 years? Check our vendor management policy - are we following procurement guidelines for all transactions?"
+   "What are our top vendor expenses? Check our vendor management policy - are we following procurement guidelines?"
 
 ### 🔍 Cross-Functional Insights & External Data
 **Web Content Analysis Questions**  
@@ -320,7 +292,6 @@ The following questions demonstrate the agent's ability to perform cross-domain 
    "Get the latest information from [company news URL] and analyze its potential impact on our sales forecast."
 
 
-
 ### 📋 Demo Flow Recommendation
 1. **Start with Sales**: Establish baseline performance metrics and customer data
 2. **Connect to HR**: Link performance to workforce characteristics  
@@ -328,6 +299,6 @@ The following questions demonstrate the agent's ability to perform cross-domain 
 4. **Revenue Attribution**: Demonstrate complete customer journey from campaign to closed revenue
 5. **Financial Integration**: Calculate true marketing ROI and customer acquisition costs
 6. **External Data Analysis**: Use web scraping to incorporate competitor or market data
-7. **File Sharing & Export**: Generate secure URLs for data sharing with stakeholders
-8. **Cross-Domain Synthesis**: Combine all insights including external data for strategic decision-making
-This progression showcases how the Snowflake Intelligence Agent seamlessly connects structured data analysis with Salesforce CRM integration, unstructured document insights, real-time web content analysis, and secure file sharing across all business domains for complete revenue attribution, competitive intelligence, and data distribution. 
+7. **Cross-Domain Synthesis**: Combine all insights including external data for strategic decision-making
+
+This progression showcases how the Snowflake Intelligence Agent seamlessly connects structured data analysis with Salesforce CRM integration, unstructured document insights, and real-time web content analysis across all business domains for complete revenue attribution and competitive intelligence. 
